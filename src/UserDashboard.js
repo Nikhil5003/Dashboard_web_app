@@ -5,7 +5,9 @@ const UserDashboard = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
   const fetchData = (searchTerm) => {
+    setLoading(true);
     const apiUrl = `https://api.nociw.co.in/getTopUserList?${
       searchTerm ? `name=${capitalizeFirstLetter(searchTerm)}` : ""
     }`;
@@ -16,6 +18,7 @@ const UserDashboard = () => {
       })
       .then((data) => {
         setUsers(data?.users);
+        setLoading(false);
       })
       .catch((err) => {
         setError("An error occurred while fetching data.");
@@ -71,10 +74,11 @@ const UserDashboard = () => {
       </form>
       {error ? (
         <p>{error}</p>
-      ) : users.length ? (
+      ) : users.length || loading ? (
         <table>
           <thead>
             <tr>
+              <th>Rank</th>
               <th>Name</th>
               <th>Gender</th>
               <th>LikesCount</th>
@@ -82,14 +86,17 @@ const UserDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{capitalizeFirstLetter(user?.gender)}</td>
-                <td>{user.likesCount}</td>
-                <td>{dateConverter(user.postAt)}</td>
-              </tr>
-            ))}
+            {users.map(
+              ({ id, rank, name, gender, likesCount, postAt } = {}) => (
+                <tr key={id}>
+                  <td>{rank}</td>
+                  <td>{name}</td>
+                  <td>{capitalizeFirstLetter(gender)}</td>
+                  <td>{likesCount}</td>
+                  <td>{dateConverter(postAt)}</td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       ) : (
