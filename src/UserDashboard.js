@@ -6,11 +6,9 @@ const UserDashboard = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const fetchData = (searchTerm) => {
-    const apiUrl = searchTerm
-      ? `http://api.nociw.co.in:8002/getTopUserList?name=${capitalizeFirstLetter(
-          searchTerm
-        )}`
-      : "http://api.nociw.co.in:8002/getTopUserList";
+    const apiUrl = `https://api.nociw.co.in/getTopUserList?${
+      searchTerm ? `name=${capitalizeFirstLetter(searchTerm)}` : ""
+    }`;
 
     fetch(apiUrl)
       .then((response) => {
