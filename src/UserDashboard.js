@@ -71,7 +71,7 @@ const UserDashboard = () => {
       </form>
       {error ? (
         <p>{error}</p>
-      ) : (
+      ) : users.length ? (
         <table>
           <thead>
             <tr>
@@ -92,6 +92,15 @@ const UserDashboard = () => {
             ))}
           </tbody>
         </table>
+      ) : (
+        <h1
+          style={{
+            width: "100%",
+            backgroundColor: "red",
+          }}
+        >
+          No users found
+        </h1>
       )}
     </div>
   );
